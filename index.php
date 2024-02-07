@@ -1,4 +1,6 @@
 <?php
+    $filterPark =  isset($_GET['parking']) ? $_GET['parking'] : '';
+    $filterVote =  isset($_GET['vote']) ? intval($_GET['vote']) : 0;
 
     $hotels = [
 
@@ -41,6 +43,21 @@
     ];
 
     $keys = array_keys($hotels[0]);
+    $newHotels = [];
+    $flagParking = "";
+
+    foreach ($hotels as $hotel) {
+        if($filterPark =="true"){
+            $flagParking = true;
+        }
+        elseif ($filterPark =="false"){
+            $flagParking = false;
+        }
+        if (($hotel["parking"] == $flagParking || empty($filterPark)) && $filterVote <= $hotel["vote"]) {
+            $newHotels[] = $hotel;
+        }
+    }
+
     
 
 ?>
@@ -52,6 +69,7 @@
         <title>Php Hotel</title>
 
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+        <link rel="stylesheet" href="style.css">
     </head>
 
     <body>
@@ -61,6 +79,27 @@
             </h1>
         </header>
         <main>
+
+        <div class="container mb-3">
+                <form action="" method="GET">
+                    <div>
+                        <label for="parking">Disponibilità parcheggio</label>
+                        <select class="form-select" name="parking" id="parking">
+                            <option value="" selected>Qualsiasi</option>
+                            <option value="true">Disponibile</option>
+                            <option value="false">Non disponibile</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="mt-5" for="vote">Cerca per voto</label>
+                        <input  type="number" name="vote" id="vote" max = "10" min = "0">
+                    </div>
+                    <button tyep="submit">
+                        Cerca
+                    </button>
+                </form>
+            </div>
+
             <div class="container">
             <table class="table table-dark table-striped">
                     <thead>
@@ -81,16 +120,24 @@
 
                     <tbody>
                         <?php
-                            foreach ($hotels as $hotel) {
+                            foreach ($newHotels as $hotel) {
                         ?>
                         <tr>
                             <?php
-                                foreach ($hotel as $elem) {
+                                foreach ($hotel as $key=>$elem) {
                             ?>
 
                             <td>
                                 <?php
+                                    if ($key == "parking" && $elem==true) {
+                                    echo "yes";
+                                    }
+                                    elseif($key == "parking" && $elem==false){
+                                    echo "no";
+                                    }
+                                    else{
                                     echo $elem;
+                                    }
                                 ?>
                             </td>
 
