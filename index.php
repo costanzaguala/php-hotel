@@ -40,6 +40,9 @@
 
     ];
 
+    $keys = array_keys($hotels[0]);
+    
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -53,33 +56,55 @@
 
     <body>
         <header>
-            <h1 class="text-center">
+            <h1 class="text-center mb-5">
                 Php Hotel
             </h1>
         </header>
         <main>
             <div class="container">
-            <ul>
-                    <?php
-                        foreach ($hotels as $hotel) {
-                    ?>
-                    <li>
-                        <?php    
-                            echo $hotel['name'];
+            <table class="table table-dark table-striped">
+                    <thead>
+                        <?php
+                        foreach ($keys as $singleKey) {
+
                         ?>
-                        <ul>
-                            <?php    
-                                foreach ($hotel as $key => $elem){
-                                    echo "<li>".$key."=>".$elem."</li>";
-                                }
+
+                        <th>
+                            <?php
+                            echo ucfirst ($singleKey);
                             ?>
-                        </ul>
-                    </li>
-                    <?php    
+                        </th>
+                        <?php
                         }
-                    ?>
-                </ul>
+                        ?>
+                    </thead>
+
+                    <tbody>
+                        <?php
+                            foreach ($hotels as $hotel) {
+                        ?>
+                        <tr>
+                            <?php
+                                foreach ($hotel as $elem) {
+                            ?>
+
+                            <td>
+                                <?php
+                                    echo $elem;
+                                ?>
+                            </td>
+
+                            <?php
+                                }
+                             ?>  
+                        </tr>
+                        <?php
+                            }
+                        ?>
+                    </tbody>
+                </table>
             </div>
         </main>
     </body>
 </html>
+
